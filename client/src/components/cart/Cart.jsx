@@ -67,6 +67,7 @@ function Cart({ items, setItems }) {
         Cell: ({ cell, row }) => {
           return (
             <Avatar
+              variant='rounded'
               sx={{ width: 100, height: 100 }}
               alt=''
               src={row.original.itemImage}

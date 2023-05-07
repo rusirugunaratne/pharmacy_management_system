@@ -1,4 +1,11 @@
-import { Avatar, Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonGroup,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useMemo } from "react";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import MaterialReactTable from "material-react-table";
@@ -9,6 +16,23 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import ShoppingImage from "../../assets/shopping.svg";
+import backgroundImage from "../../assets/homeBackground.jpg";
+
+const styles = {
+  header: {
+    backgroundImage: `url(${backgroundImage})`,
+    height: "100vh",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+  },
+
+  content: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  },
+};
 
 function Cart({ items, setItems }) {
   const navigate = useNavigate();
@@ -109,42 +133,50 @@ function Cart({ items, setItems }) {
   );
 
   return (
-    <>
-      <Stack
-        direction='column'
+    <div style={styles.header}>
+      <Box
+        display='flex'
         justifyContent='center'
         alignItems='center'
-        spacing={2}
-        marginTop={5}
+        minHeight='100vh'
+        style={styles.content}
       >
-        {items.length === 0 ? (
-          <>
-            <img height={300} src={ShoppingImage} alt='' />
-            <Typography variant='h4'>
-              You don't have any items in your cart. Let's get shopping!
-            </Typography>
-            <Button
-              onClick={() => navigate("/")}
-              variant='contained'
-              startIcon={<ShoppingBasketIcon />}
-            >
-              Start Shopping
-            </Button>
-          </>
-        ) : (
-          <Stack gap={2}>
-            <Button
-              onClick={() => navigate("/checkout")}
-              variant='contained'
-              startIcon={<ShoppingCartCheckoutIcon />}
-            >
-              Checkout
-            </Button>
-            <MaterialReactTable columns={columns} data={items} />
-          </Stack>
-        )}
-      </Stack>
-    </>
+        <Stack
+          direction='column'
+          justifyContent='center'
+          alignItems='center'
+          spacing={2}
+          marginTop={5}
+        >
+          {items.length === 0 ? (
+            <>
+              <img height={300} src={ShoppingImage} alt='' />
+              <Typography variant='h4'>
+                You don't have any items in your cart. Let's get shopping!
+              </Typography>
+              <Button
+                onClick={() => navigate("/")}
+                variant='contained'
+                startIcon={<ShoppingBasketIcon />}
+              >
+                Start Shopping
+              </Button>
+            </>
+          ) : (
+            <Stack gap={2}>
+              <Button
+                onClick={() => navigate("/checkout")}
+                variant='contained'
+                startIcon={<ShoppingCartCheckoutIcon />}
+              >
+                Checkout
+              </Button>
+              <MaterialReactTable columns={columns} data={items} />
+            </Stack>
+          )}
+        </Stack>
+      </Box>
+    </div>
   );
 }
 

@@ -9,7 +9,8 @@ shipmentController.post('/shipment', async (req, res) => {
     const reqBody = req.body
     const data = new Model({
         shippingNumber: reqBody.shippingNumber,
-        paymentMethod: reqBody.paymentMethod
+        paymentMethod: reqBody.paymentMethod,
+        totalPrice: reqBody.totalPrice
     })
 
     try {

@@ -27,6 +27,7 @@ function HomePage({ items, setItems }) {
 
   const handleAddToCart = (item) => {
     if (items.findIndex((cartItem) => cartItem._id === item._id) === -1) {
+      item.selectedQuantity = 0;
       selectedItems.push(item);
       console.log("Selected rows:", selectedItems);
       setItems((i) => [...selectedItems]);

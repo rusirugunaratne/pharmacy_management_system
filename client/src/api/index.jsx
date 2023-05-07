@@ -5,7 +5,7 @@ export const BASE_URL = "http://localhost:3001/";
 export const ENDPOINTS = {
   item: "item",
   cartItem: "cartItem",
-  shipment: "shipments",
+  shipment: "shipment",
 };
 
 export const createAPIEndpoint = (endpoint) => {

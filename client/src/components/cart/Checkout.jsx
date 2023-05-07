@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -16,6 +17,23 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS, createAPIEndpoint } from "../../api";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
+import backgroundImage from "../../assets/homeBackground.jpg";
+
+const styles = {
+  header: {
+    backgroundImage: `url(${backgroundImage})`,
+    height: "100vh",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+  },
+
+  content: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  },
+};
 
 function Checkout({ items, setItems }) {
   const navigate = useNavigate();
@@ -61,6 +79,7 @@ function Checkout({ items, setItems }) {
     const shipment = {
       shippingNumber: uniqueCode,
       paymentMethod: paymentMethod,
+      totalPrice: getTotalPrice(),
     };
     const postItems = [];
     items.forEach((item) =>
@@ -108,89 +127,97 @@ function Checkout({ items, setItems }) {
   );
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
-      >
-        <DialogTitle id='alert-dialog-title'>
-          {"Set the payment method"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            At our pharmacy, we offer our customers the flexibility to choose
-            from two convenient payment options: cash or card. Whether you
-            prefer to pay with physical currency or through a debit or credit
-            card, we have you covered. We understand that everyone has different
-            preferences when it comes to paying for their purchases, which is
-            why we strive to make the payment process as easy and hassle-free as
-            possible. So whether you're picking up a prescription or shopping
-            for over-the-counter products, you can choose the payment method
-            that works best for you.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setPaymentMethod("Cash");
-              handleClose();
-            }}
-          >
-            Cash
-          </Button>
-          <Button
-            onClick={() => {
-              setPaymentMethod("Card");
-              handleClose();
-            }}
-          >
-            Card
-          </Button>
-          <Button
-            variant='contained'
-            color='error'
-            onClick={handleClose}
-            autoFocus
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Stack
-        direction='column'
+    <div style={styles.header}>
+      <Box
+        display='flex'
         justifyContent='center'
         alignItems='center'
-        spacing={2}
-        marginTop={5}
+        minHeight='100vh'
+        style={styles.content}
       >
-        <Typography variant='h8'>{`Shipping Number : ${uniqueCode}`}</Typography>
-        <MaterialReactTable columns={columns} data={items} />
-        <Typography variant='h4'>{`Sub total (LKR)  : ${getTotalPrice().toFixed(
-          2
-        )}`}</Typography>
-        <Stack direction={"row"} spacing={2}>
-          <Typography variant='h6'>{`Payment Method : ${paymentMethod}`}</Typography>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>
+            {"Set the payment method"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              At our pharmacy, we offer our customers the flexibility to choose
+              from two convenient payment options: cash or card. Whether you
+              prefer to pay with physical currency or through a debit or credit
+              card, we have you covered. We understand that everyone has
+              different preferences when it comes to paying for their purchases,
+              which is why we strive to make the payment process as easy and
+              hassle-free as possible. So whether you're picking up a
+              prescription or shopping for over-the-counter products, you can
+              choose the payment method that works best for you.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setPaymentMethod("Cash");
+                handleClose();
+              }}
+            >
+              Cash
+            </Button>
+            <Button
+              onClick={() => {
+                setPaymentMethod("Card");
+                handleClose();
+              }}
+            >
+              Card
+            </Button>
+            <Button
+              variant='contained'
+              color='error'
+              onClick={handleClose}
+              autoFocus
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Stack
+          direction='column'
+          justifyContent='center'
+          alignItems='center'
+          spacing={2}
+          marginTop={5}
+        >
+          <Typography variant='h8'>{`Shipping Number : ${uniqueCode}`}</Typography>
+          <MaterialReactTable columns={columns} data={items} />
+          <Typography variant='h4'>{`Sub total (LKR)  : ${getTotalPrice().toFixed(
+            2
+          )}`}</Typography>
+          <Stack direction={"row"} spacing={2}>
+            <Typography variant='h6'>{`Payment Method : ${paymentMethod}`}</Typography>
+            <Button
+              onClick={handleClickOpen}
+              variant='contained'
+              startIcon={<CreditScoreIcon />}
+            >
+              Set Payment Method
+            </Button>
+          </Stack>
+
           <Button
-            onClick={handleClickOpen}
+            disabled={paymentMethod === "Not Selected"}
+            onClick={() => completeOrder()}
             variant='contained'
-            startIcon={<CreditScoreIcon />}
+            startIcon={<ChecklistIcon />}
           >
-            Set Payment Method
+            Complete Order
           </Button>
         </Stack>
-
-        <Button
-          disabled={paymentMethod === "Not Selected"}
-          onClick={() => completeOrder()}
-          variant='contained'
-          startIcon={<ChecklistIcon />}
-        >
-          Complete Order
-        </Button>
-      </Stack>
-    </>
+      </Box>
+    </div>
   );
 }
 

@@ -53,6 +53,7 @@ function HomePage({ items, setItems }) {
             <>
               <Stack spacing={-2}>
                 <Avatar
+                  variant='rounded'
                   sx={{ width: 100, height: 100 }}
                   alt=''
                   src={row.original.itemImage}

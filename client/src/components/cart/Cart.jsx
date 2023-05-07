@@ -164,6 +164,7 @@ function Cart({ items, setItems }) {
             </>
           ) : (
             <Stack gap={2}>
+              <MaterialReactTable columns={columns} data={items} />
               <Button
                 onClick={() => navigate("/checkout")}
                 variant='contained'
@@ -171,7 +172,6 @@ function Cart({ items, setItems }) {
               >
                 Checkout
               </Button>
-              <MaterialReactTable columns={columns} data={items} />
             </Stack>
           )}
         </Stack>
